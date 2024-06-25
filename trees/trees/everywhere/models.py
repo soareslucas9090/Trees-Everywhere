@@ -18,7 +18,6 @@ class UserManager(BaseUserManager):
         self,
         email,
         name,
-        account,
         password=None,
         **extra_fields,
     ):
@@ -26,13 +25,10 @@ class UserManager(BaseUserManager):
             raise ValueError("The user needs a valid name!")
         if not email:
             raise ValueError("The user needs a valid email!")
-        if not account:
-            raise ValueError("The user needs a valid account!")
 
         user = self.model(
             email=self.normalize_email(email),
             name=name,
-            account=Account.objects.get(pk=account),
             **extra_fields,
         )
 
@@ -44,7 +40,6 @@ class UserManager(BaseUserManager):
         self,
         email,
         nome,
-        account,
         password=None,
         **extra_fields,
     ):
@@ -62,7 +57,6 @@ class UserManager(BaseUserManager):
         user = self.create_user(
             email=email,
             nome=nome,
-            account=account,
             password=password,
             **extra_fields,
         )
@@ -76,9 +70,6 @@ class UserManager(BaseUserManager):
 class User(AbstractBaseUser, PermissionsMixin):
     name = models.CharField(max_length=255, null=False)
     email = models.EmailField(unique=True, null=False)
-    account = models.ForeignKey(
-        Account, related_name="user_account", on_delete=models.RESTRICT, null=False
-    )
     date_joined = models.DateTimeField(auto_now_add=True)
 
     is_active = models.BooleanField(default=True)
@@ -104,3 +95,41 @@ class User(AbstractBaseUser, PermissionsMixin):
     class Meta:
         verbose_name = "user"
         verbose_name_plural = "users"
+
+
+class Account_User(models.Model):
+    account = models.ForeignKey(
+        Account, related_name="accountuser_account", on_delete=models.CASCADE, null=False
+    )
+    user = models.ForeignKey(
+        User, related_name="accountuser_user", on_delete=models.CASCADE, null=False
+    )
+
+    def __str__(self):
+        str = f"Setor: {self.setor} e Usuario: {self.usuario}"
+        return str
+
+
+class Profile(models.Model):
+    about = models.TextField(blank=False, null=False)
+    joined = models.DateTimeField(auto_now_add=True)
+    user = models.ForeignKey(User, related_name="profile_user", on_delete=models.CASCADE, null=False)
+
+
+class Tree(models.Model):
+    name = models.CharField(max_length=255, null=False)
+    scientific_name = models.CharField(max_length=255, null=False)
+
+
+class PlantedTree(models.Model):
+    age = models.IntegerField(null=False)
+    planted_at = models.DateTimeField(auto_now_add=True)
+    user = models.ForeignKey(
+        User, related_name="plantedtree_user", on_delete=models.RESTRICT, null=False
+    )
+    tree = models.ForeignKey(
+        Tree, related_name="plantedtree_tree", on_delete=models.RESTRICT, null=False
+    )
+    account = models.ForeignKey(
+        Account, related_name="plantedtree_account", on_delete=models.RESTRICT, null=False
+    )
