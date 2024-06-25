@@ -1,6 +1,6 @@
 import os
-from pathlib import Path
 from datetime import timedelta
+from pathlib import Path
 
 # Build paths inside the project like this: BASE_DIR / 'subdir'.
 BASE_DIR = Path(__file__).resolve().parent.parent
@@ -18,7 +18,7 @@ SPECTACULAR_SETTINGS = {
     "VERSION": "1.0.0",
     "SERVE_INCLUDE_SCHEMA": False,
 }
-    
+
 SECRET_KEY = os.environ.get("secretKeyDjango")
 
 if SECRET_KEY:
@@ -34,6 +34,7 @@ if SECRET_KEY:
             "PORT": os.environ.get("bdPort"),
         }
     }
+    signing_key = os.environ.get("secretKeyJWT")
 else:
     from .env import (
         allowedHosts,
@@ -45,6 +46,7 @@ else:
         bdUser,
         debug,
         secretKeyDjango,
+        secretKeyJWT,
     )
 
     SECRET_KEY = secretKeyDjango
@@ -60,6 +62,7 @@ else:
             "PORT": bdPort,
         }
     }
+    signing_key = secretKeyJWT
 
 
 AUTH_USER_MODEL = "everywhere.User"
@@ -76,6 +79,7 @@ INSTALLED_APPS = [
     "django.contrib.sessions",
     "django.contrib.messages",
     "django.contrib.staticfiles",
+    "debug_toolbar",
     "rest_framework_simplejwt",
     "rest_framework",
     "drf_spectacular",
@@ -91,11 +95,14 @@ MIDDLEWARE = [
     "django.contrib.auth.middleware.AuthenticationMiddleware",
     "django.contrib.messages.middleware.MessageMiddleware",
     "django.middleware.clickjacking.XFrameOptionsMiddleware",
-    "corsheaders.middleware.CorsMiddleware",
-    "django.middleware.common.CommonMiddleware",
+    "debug_toolbar.middleware.DebugToolbarMiddleware",
 ]
 
 ROOT_URLCONF = "trees.urls"
+
+INTERNAL_IPS = [
+    "127.0.0.1",
+]
 
 TEMPLATES = [
     {
@@ -151,14 +158,12 @@ DEFAULT_AUTO_FIELD = "django.db.models.BigAutoField"
 
 REST_FRAMEWORK = {
     "DEFAULT_SCHEMA_CLASS": "drf_spectacular.openapi.AutoSchema",
-    
     "DEFAULT_AUTHENTICATION_CLASSES": (
-        'rest_framework.authentication.SessionAuthentication',
+        "rest_framework.authentication.SessionAuthentication",
         "rest_framework.authentication.TokenAuthentication",
         "rest_framework_simplejwt.authentication.JWTAuthentication",
     ),
     "DEFAULT_PERMISSION_CLASSES": ("rest_framework.permissions.AllowAny",),
-  
     "DEFAULT_PAGINATION_CLASS": "rest_framework.pagination.LimitOffsetPagination",
     "PAGE_SIZE": 10,
     "DATE_INPUT_FORMATS": ["%Y-%m-%d", "%d-%m-%Y", "%Y/%m/%d", "%d/%m/%Y"],
@@ -166,16 +171,6 @@ REST_FRAMEWORK = {
         "%H:%M",
     ],
 }
-
-
-signing = os.environ.get("secretKeyJWT")
-
-if signing:
-    signing_key = signing
-else:
-    from .env import *
-
-    signing_key = secretKeyJWT
 
 
 SIMPLE_JWT = {

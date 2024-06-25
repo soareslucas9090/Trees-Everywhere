@@ -11,6 +11,9 @@ class Account(models.Model):
     name = models.CharField(max_length=255, null=False)
     created = models.DateTimeField(auto_now_add=True)
     active = models.BooleanField(default=True, null=False)
+    
+    def __str__(self):
+        return self.name
 
 
 class UserManager(BaseUserManager):
@@ -39,7 +42,7 @@ class UserManager(BaseUserManager):
     def create_superuser(
         self,
         email,
-        nome,
+        name,
         password=None,
         **extra_fields,
     ):
@@ -56,7 +59,7 @@ class UserManager(BaseUserManager):
 
         user = self.create_user(
             email=email,
-            nome=nome,
+            name=name,
             password=password,
             **extra_fields,
         )
@@ -86,10 +89,10 @@ class User(AbstractBaseUser, PermissionsMixin):
     objects = UserManager()
 
     def __str__(self):
-        return self.nome
+        return self.name
 
     def save(self, *args, **kwargs):
-        self.nome = self.nome.lower()
+        self.name = self.name.lower()
         super().save(*args, **kwargs)
 
     class Meta:
@@ -106,19 +109,27 @@ class Account_User(models.Model):
     )
 
     def __str__(self):
-        str = f"Setor: {self.setor} e Usuario: {self.usuario}"
+        str = f"Account: {self.account}, User: {self.user}"
         return str
 
 
 class Profile(models.Model):
     about = models.TextField(blank=False, null=False)
     joined = models.DateTimeField(auto_now_add=True)
-    user = models.ForeignKey(User, related_name="profile_user", on_delete=models.CASCADE, null=False)
+    user = models.OneToOneField(
+        User, related_name="profile_user", on_delete=models.CASCADE, null=False
+    )
+    
+    def __str__(self):
+        return self.user
 
 
 class Tree(models.Model):
     name = models.CharField(max_length=255, null=False)
     scientific_name = models.CharField(max_length=255, null=False)
+    
+    def __str__(self):
+        return self.name
 
 
 class PlantedTree(models.Model):
@@ -133,3 +144,6 @@ class PlantedTree(models.Model):
     account = models.ForeignKey(
         Account, related_name="plantedtree_account", on_delete=models.RESTRICT, null=False
     )
+    
+    def __str__(self):
+        return f"User: {self.user}, Tree: {self.tree}"
