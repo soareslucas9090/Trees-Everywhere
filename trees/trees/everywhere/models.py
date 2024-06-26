@@ -11,7 +11,7 @@ class Account(models.Model):
     name = models.CharField(max_length=255, null=False)
     created = models.DateTimeField(auto_now_add=True)
     active = models.BooleanField(default=True, null=False)
-    
+
     def __str__(self):
         return self.name
 
@@ -74,6 +74,7 @@ class User(AbstractBaseUser, PermissionsMixin):
     name = models.CharField(max_length=255, null=False)
     email = models.EmailField(unique=True, null=False)
     date_joined = models.DateTimeField(auto_now_add=True)
+    accounts = models.ManyToManyField("Account", through="Account_User", blank=True)
 
     is_active = models.BooleanField(default=True)
     is_admin = models.BooleanField(default=False)
@@ -102,7 +103,10 @@ class User(AbstractBaseUser, PermissionsMixin):
 
 class Account_User(models.Model):
     account = models.ForeignKey(
-        Account, related_name="accountuser_account", on_delete=models.CASCADE, null=False
+        Account,
+        related_name="accountuser_account",
+        on_delete=models.CASCADE,
+        null=False,
     )
     user = models.ForeignKey(
         User, related_name="accountuser_user", on_delete=models.CASCADE, null=False
@@ -115,11 +119,11 @@ class Account_User(models.Model):
 
 class Profile(models.Model):
     about = models.TextField(blank=False, null=False)
-    joined = models.DateTimeField(auto_now_add=True)
+    joined = models.DateTimeField(null=True)
     user = models.OneToOneField(
         User, related_name="profile_user", on_delete=models.CASCADE, null=False
     )
-    
+
     def __str__(self):
         return self.user
 
@@ -127,7 +131,7 @@ class Profile(models.Model):
 class Tree(models.Model):
     name = models.CharField(max_length=255, null=False)
     scientific_name = models.CharField(max_length=255, null=False)
-    
+
     def __str__(self):
         return self.name
 
@@ -142,8 +146,11 @@ class PlantedTree(models.Model):
         Tree, related_name="plantedtree_tree", on_delete=models.RESTRICT, null=False
     )
     account = models.ForeignKey(
-        Account, related_name="plantedtree_account", on_delete=models.RESTRICT, null=False
+        Account,
+        related_name="plantedtree_account",
+        on_delete=models.RESTRICT,
+        null=False,
     )
-    
+
     def __str__(self):
         return f"User: {self.user}, Tree: {self.tree}"

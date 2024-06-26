@@ -1,5 +1,5 @@
 from django.contrib import admin
-from django.urls import path, include
+from django.urls import include, path
 from drf_spectacular.views import (
     SpectacularAPIView,
     SpectacularRedocView,
@@ -28,4 +28,5 @@ urlpatterns = [
         name="redoc",
     ),
     path("__debug__/", include("debug_toolbar.urls")),
+    path("api/everywhere/v1/", include("everywhere.urls")),
 ]
