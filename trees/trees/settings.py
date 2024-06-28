@@ -125,6 +125,7 @@ TEMPLATES = [
 
 WSGI_APPLICATION = "trees.wsgi.application"
 
+# redirecionamento padrão depois de fazer o login
 LOGIN_REDIRECT_URL = "/"
 
 AUTH_PASSWORD_VALIDATORS = [

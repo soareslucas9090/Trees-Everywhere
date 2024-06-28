@@ -9,7 +9,7 @@ from .views.api.views import (
     TreeViewSet,
     UserViewSet,
 )
-from .views.frontend.views import CustomLogoutView, index
+from .views.frontend.views import CustomLogoutView, Redirect, UserCreateView, index
 
 everywhere_router = SimpleRouter()
 everywhere_router.register("users", UserViewSet)
@@ -19,8 +19,11 @@ everywhere_router.register("trees", TreeViewSet)
 everywhere_router.register("plantedtrees", PlantedTreeViewSet)
 
 urlpatterns = [
+    ####### API #######
     path("api/v1/", include(everywhere_router.urls)),
     path("index/", index, name="index"),
-    path("", auth_views.LoginView.as_view(), name="login"),
+    path("", Redirect.as_view(), name="start"),
+    path("login/", auth_views.LoginView.as_view(), name="login"),
     path("logout/", CustomLogoutView.as_view(), name="logout"),
+    path("user/create/", UserCreateView.as_view(), name="user_create"),
 ]
