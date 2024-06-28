@@ -3,9 +3,9 @@ from rest_framework.permissions import AllowAny, IsAuthenticated
 from rest_framework.response import Response
 from rest_framework.viewsets import ModelViewSet
 
-from .models import Account, PlantedTree, Profile, Tree, User
-from .permissions import IsAdmin
-from .serializers import (
+from ...models import Account, PlantedTree, Profile, Tree, User
+from ...permissions import IsAdmin
+from ...serializers import (
     AccountSerializer,
     PlantedTreeSerializer,
     ProfileSerializer,

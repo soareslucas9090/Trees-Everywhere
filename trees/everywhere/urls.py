@@ -1,12 +1,12 @@
 from django.urls import include, path
 from rest_framework.routers import SimpleRouter
 
-from .views import (
-    UserViewSet,
+from .views.api.views import (
     AccountViewSet,
+    PlantedTreeViewSet,
     ProfileViewSet,
     TreeViewSet,
-    PlantedTreeViewSet
+    UserViewSet,
 )
 
 everywhere_router = SimpleRouter()
