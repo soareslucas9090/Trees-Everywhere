@@ -83,7 +83,7 @@ CORS_ORIGIN_WHITELIST = [
 ]
 
 CORS_ALLOWED_HOSTS = [
-    "https://web-vurkazv8fljz.up-de-fra1-k8s-1.apps.run-on-seenode.com/",
+    "https://web-vurkazv8fljz.up-de-fra1-k8s-1.apps.run-on-seenode.com",
     "https://cloud.seenode.com",
     "http://127.0.0.1",
     "https://127.0.0.1",
@@ -92,7 +92,7 @@ CORS_ALLOWED_HOSTS = [
 CORS_ALLOW_CREDENTIALS = True
 
 CSRF_TRUSTED_ORIGINS = [
-    "https://web-vurkazv8fljz.up-de-fra1-k8s-1.apps.run-on-seenode.com/",
+    "https://web-vurkazv8fljz.up-de-fra1-k8s-1.apps.run-on-seenode.com",
     "https://cloud.seenode.com",
     "http://127.0.0.1",
     "https://127.0.0.1",
