@@ -1,3 +1,4 @@
+from django.contrib.auth.hashers import check_password, make_password
 from django.contrib.auth.models import (
     AbstractBaseUser,
     BaseUserManager,
@@ -94,7 +95,11 @@ class User(AbstractBaseUser, PermissionsMixin):
 
     def save(self, *args, **kwargs):
         self.name = self.name.lower()
-        super().save(*args, **kwargs)
+        if not self.pk or not check_password(
+            self.password, self.__class__.objects.get(pk=self.pk).password
+        ):
+            self.password = make_password(self.password)
+        super(User, self).save(*args, **kwargs)
 
     class Meta:
         verbose_name = "user"
