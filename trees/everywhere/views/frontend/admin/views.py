@@ -9,28 +9,9 @@ from ....models import Account, PlantedTree, Tree
 from ....permissions import IsAdmin
 
 
-@method_decorator(csrf_protect, name="dispatch")
-class CustomLogoutView(View):
-    def get(self, request, *args, **kwargs):
-        logout(request)
-        return redirect("login")
-
-
 class MenuAdminView(View):
     def get(self, request):
         return render(request, "admin/menu.html")
-
-
-@method_decorator(csrf_protect, name="dispatch")
-class Redirect(View):
-    def get(self, request, *args, **kwargs):
-        if request.user.is_authenticated:
-            if IsAdmin():
-                return redirect("menu_admin")
-            else:
-                ...
-        else:
-            return redirect("login")
 
 
 class UserCreateView(View):

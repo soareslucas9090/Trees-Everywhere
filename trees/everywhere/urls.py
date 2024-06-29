@@ -2,6 +2,7 @@ from django.contrib.auth import views as auth_views
 from django.urls import include, path
 from rest_framework.routers import SimpleRouter
 
+from .views import CustomLogoutView, RedirectView
 from .views.api.views import (
     AccountViewSet,
     PlantedTreeViewSet,
@@ -12,9 +13,7 @@ from .views.api.views import (
 from .views.frontend.admin.views import (
     AccountCreateView,
     AccountListView,
-    CustomLogoutView,
     MenuAdminView,
-    Redirect,
     TreeCreateView,
     TreeDetailView,
     TreeListView,
@@ -31,7 +30,7 @@ everywhere_router.register("plantedtrees", PlantedTreeViewSet)
 urlpatterns = [
     ####### API #######
     path("api/v1/", include(everywhere_router.urls)),
-    path("", Redirect.as_view(), name="start"),
+    path("", RedirectView.as_view(), name="start"),
     path("login/", auth_views.LoginView.as_view(), name="login"),
     path("logout/", CustomLogoutView.as_view(), name="logout"),
     path("menu/admin", MenuAdminView.as_view(), name="menu_admin"),
