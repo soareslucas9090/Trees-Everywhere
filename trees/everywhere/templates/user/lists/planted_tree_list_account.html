@@ -1,25 +1,30 @@
 {% extends "base.html" %}
 
-{% block title %}Listar Arvores Plantadas{% endblock %}
+{% block title %}Listar Arvores Plantadas as minhas contas{% endblock %}
 
 {% block content %}
-<h2>Lista de Arvores Plantadas</h2>
+<h2>Listar Arvores Plantadas as minhas contas</h2>
 <table>
     <thead>
         <tr>
             <th>Arvore</th>
             <th>Plantio em</th>
+            <th>Idade</th>
+            <th>Usuario</th>
+            <th>Conta</th>
         </tr>
     </thead>
     <tbody>
         {% for planted_tree in planted_trees %}
         <tr>
-            <td><a href="{% url 'planted_tree_detail' planted_tree.id %}">{{ planted_tree.tree.name }}</a></td>
+            <td>{{ planted_tree.tree.name }}</a></td>
             <td>{{ planted_tree.planted_at }}</td>
+            <td>{{ planted_tree.age }}</td>
+            <td>{{ planted_tree.user.name }}</td>
+            <td>{{ planted_tree.account }}</td>
         </tr>
         {% endfor %}
     </tbody>
 </table>
-<a href="{% url 'planted_tree_create' %}" class="btn btn-primary">Plantar nova arvore</a>
 <a href="{% url 'menu_user' %}" class="btn btn-secondary">Voltar</a>
 {% endblock %}

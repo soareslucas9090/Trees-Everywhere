@@ -8,12 +8,12 @@ from ....forms import AccountForm, TreeForm, UserCreationForm
 from ....models import Account, PlantedTree, Tree
 from ....permissions import IsAdmin
 
-
+@method_decorator(csrf_protect, name="dispatch")
 class MenuAdminView(View):
     def get(self, request):
         return render(request, "admin/menu.html")
 
-
+@method_decorator(csrf_protect, name="dispatch")
 class UserCreateView(View):
     def get(self, request):
         form = UserCreationForm()
@@ -26,7 +26,7 @@ class UserCreateView(View):
             return redirect("user_create")
         return render(request, "admin/forms/registration_form.html", {"form": form})
 
-
+@method_decorator(csrf_protect, name="dispatch")
 class AccountListView(View):
     def get(self, request):
         accounts = Account.objects.all()
@@ -39,7 +39,7 @@ class AccountListView(View):
         account.save()
         return redirect("accounts_list")
 
-
+@method_decorator(csrf_protect, name="dispatch")
 class AccountCreateView(View):
     def get(self, request):
         form = AccountForm()
@@ -52,13 +52,13 @@ class AccountCreateView(View):
             return redirect("accounts_list")
         return render(request, "admin/forms/account_form.html", {"form": form})
 
-
+@method_decorator(csrf_protect, name="dispatch")
 class TreeListView(View):
     def get(self, request):
         trees = Tree.objects.all()
         return render(request, "admin/lists/tree_list.html", {"trees": trees})
 
-
+@method_decorator(csrf_protect, name="dispatch")
 class TreeCreateView(View):
     def get(self, request):
         form = TreeForm()
@@ -68,11 +68,10 @@ class TreeCreateView(View):
         form = TreeForm(request.POST)
         if form.is_valid():
             form.save()
-            print(form)
             return redirect("trees_list")
         return render(request, "admin/lists/tree_form.html", {"form": form})
 
-
+@method_decorator(csrf_protect, name="dispatch")
 class TreeDetailView(View):
     def get(self, request, pk):
         tree = get_object_or_404(Tree, id=pk)

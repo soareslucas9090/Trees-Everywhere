@@ -18,7 +18,13 @@ from .views.frontend.admin.views import (
     TreeListView,
     UserCreateView,
 )
-from .views.frontend.users.views import MenuUserView, PlantedTreeListView
+from .views.frontend.users.views import (
+    MenuUserView,
+    PlantedTreeAccountsView,
+    PlantedTreeCreateView,
+    PlantedTreeDetailView,
+    PlantedTreeListView,
+)
 from .views.frontend.views import CustomLogoutView, RedirectView
 
 everywhere_router = SimpleRouter()
@@ -47,4 +53,19 @@ urlpatterns = [
     ####### User #######
     path("menu/user", MenuUserView.as_view(), name="menu_user"),
     path("planted_tree", PlantedTreeListView.as_view(), name="planted_trees_list"),
+    path(
+        "planted_tree/<int:pk>/",
+        PlantedTreeDetailView.as_view(),
+        name="planted_tree_detail",
+    ),
+    path(
+        "planted_tree/create/",
+        PlantedTreeCreateView.as_view(),
+        name="planted_tree_create",
+    ),
+    path(
+        "planted_tree/accounts/",
+        PlantedTreeAccountsView.as_view(),
+        name="planted_trees_list_account",
+    ),
 ]

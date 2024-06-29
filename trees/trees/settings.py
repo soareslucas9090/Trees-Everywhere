@@ -136,6 +136,7 @@ ROOT_URLCONF = "trees.urls"
 
 INTERNAL_IPS = [
     "127.0.0.1",
+    "https://web-vurkazv8fljz.up-de-fra1-k8s-1.apps.run-on-seenode.com"
 ]
 
 TEMPLATES = [
@@ -157,7 +158,7 @@ TEMPLATES = [
 WSGI_APPLICATION = "trees.wsgi.application"
 
 # redirecionamento padrão depois de fazer o login
-LOGIN_REDIRECT_URL = "/everywhere/menu/user/"
+LOGIN_REDIRECT_URL = "/"
 
 SESSION_COOKIE_AGE = 300
 

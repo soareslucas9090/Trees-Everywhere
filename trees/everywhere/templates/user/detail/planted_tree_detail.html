@@ -1,0 +1,26 @@
+{% extends "base.html" %}
+
+{% block title %}Detalhes da Arvore Plantada{% endblock %}
+
+{% block content %}
+<h2>Detalhes da Arvore Plantada: {{ planted_tree.tree.name }}</h2>
+
+<table>
+    <thead>
+        <tr>
+            <th>Idade</th>
+            <th>Data de Plantio</th>
+            <th>Plantada na conta</th>
+        </tr>
+    </thead>
+    <tbody>
+        <tr>
+            <td>{{ planted_tree.age }}</td>
+            <td>{{ planted_tree.planted_at }}</td>
+            <td>{{ planted_tree.account }}</td>
+        </tr>
+    </tbody>
+</table>
+
+<a href="{% url 'menu_user' %}" class="btn btn-secondary">Voltar</a>
+{% endblock %}

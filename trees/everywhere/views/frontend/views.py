@@ -18,7 +18,7 @@ class CustomLogoutView(View):
 class RedirectView(View):
     def get(self, request, *args, **kwargs):
         if request.user.is_authenticated:
-            if IsAdmin().has_permission(request, View):
+            if request.user.is_admin:
                 return redirect("menu_admin")
             else:
                 return redirect("menu_user")
