@@ -5,7 +5,7 @@ from .models import Account, User
 
 class UserCreationForm(forms.ModelForm):
     accounts = forms.ModelMultipleChoiceField(
-        queryset=Account.objects.all(), required=False
+        queryset=Account.objects.filter(active=True), required=False
     )
 
     class Meta:
@@ -25,3 +25,9 @@ class UserCreationForm(forms.ModelForm):
             self.save_m2m()
             user.accounts.set(self.cleaned_data["accounts"])
         return user
+
+
+class AccountForm(forms.ModelForm):
+    class Meta:
+        model = Account
+        fields = ["name", "active"]
