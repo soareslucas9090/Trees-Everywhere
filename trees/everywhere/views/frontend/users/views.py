@@ -56,9 +56,8 @@ class PlantedTreeCreateView(View):
 @method_decorator(csrf_protect, name="dispatch")
 class PlantedTreeAccountsView(View):
     def get(self, request):
-        planted_trees = PlantedTree.objects.all()
+        planted_trees = PlantedTree.objects.filter(account__in=request.user.accounts.all())
 
-        print(PlantedTree.objects.filter(account__in=request.user.accounts.all()))
         return render(
             request,
             "user/lists/planted_tree_list_account.html",
