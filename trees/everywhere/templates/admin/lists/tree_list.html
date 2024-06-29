@@ -14,11 +14,12 @@
     <tbody>
         {% for tree in trees %}
         <tr>
-            <td>{{ tree.name }}</td>
+            <td><a href="{% url 'tree_detail' tree.id %}">{{ tree.name }}</a></td>
             <td>{{ tree.scientific_name }}</td>
         </tr>
         {% endfor %}
     </tbody>
 </table>
 <a href="{% url 'tree_create' %}" class="btn btn-primary">Criar Nova Planta</a>
+<a href="{% url 'menu_admin' %}" class="btn btn-secondary">Voltar</a>
 {% endblock %}

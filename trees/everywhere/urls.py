@@ -9,12 +9,14 @@ from .views.api.views import (
     TreeViewSet,
     UserViewSet,
 )
-from .views.frontend.views import (
+from .views.frontend.admin.views import (
     AccountCreateView,
     AccountListView,
     CustomLogoutView,
+    MenuAdminView,
     Redirect,
     TreeCreateView,
+    TreeDetailView,
     TreeListView,
     UserCreateView,
 )
@@ -32,9 +34,11 @@ urlpatterns = [
     path("", Redirect.as_view(), name="start"),
     path("login/", auth_views.LoginView.as_view(), name="login"),
     path("logout/", CustomLogoutView.as_view(), name="logout"),
+    path("menu/admin", MenuAdminView.as_view(), name="menu_admin"),
     path("user/create/", UserCreateView.as_view(), name="user_create"),
     path("accounts/", AccountListView.as_view(), name="accounts_list"),
     path("accounts/create/", AccountCreateView.as_view(), name="account_create"),
     path("trees/", TreeListView.as_view(), name="trees_list"),
     path("trees/create/", TreeCreateView.as_view(), name="tree_create"),
+    path("trees/<int:pk>/", TreeDetailView.as_view(), name="tree_detail"),
 ]

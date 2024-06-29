@@ -4,9 +4,9 @@ from django.utils.decorators import method_decorator
 from django.views import View
 from django.views.decorators.csrf import csrf_protect
 
-from ...forms import AccountForm, TreeForm, UserCreationForm
-from ...models import Account, Tree
-from ...permissions import IsAdmin
+from ....forms import AccountForm, TreeForm, UserCreationForm
+from ....models import Account, PlantedTree, Tree
+from ....permissions import IsAdmin
 
 
 @method_decorator(csrf_protect, name="dispatch")
@@ -16,12 +16,17 @@ class CustomLogoutView(View):
         return redirect("login")
 
 
+class MenuAdminView(View):
+    def get(self, request):
+        return render(request, "admin/menu.html")
+
+
 @method_decorator(csrf_protect, name="dispatch")
 class Redirect(View):
     def get(self, request, *args, **kwargs):
         if request.user.is_authenticated:
             if IsAdmin():
-                return redirect("user_create")
+                return redirect("menu_admin")
             else:
                 ...
         else:
@@ -85,3 +90,14 @@ class TreeCreateView(View):
             print(form)
             return redirect("trees_list")
         return render(request, "admin/lists/tree_form.html", {"form": form})
+
+
+class TreeDetailView(View):
+    def get(self, request, pk):
+        tree = get_object_or_404(Tree, id=pk)
+        planted_trees = PlantedTree.objects.filter(tree=tree)
+        return render(
+            request,
+            "admin/details/tree_detail.html",
+            {"tree": tree, "planted_trees": planted_trees},
+        )

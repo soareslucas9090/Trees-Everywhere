@@ -1,0 +1,19 @@
+{% extends "base.html" %}
+
+{% block title %}Menu{% endblock %}
+
+{% block content %}
+<h1>Escolha sua ação:</h1>
+
+<table>
+    <thead>
+        <tr>
+            <th><a href="{% url 'user_create' %}" class="btn btn-primary">Criar usuário</a></th>
+            <th><a href="{% url 'accounts_list' %}" class="btn btn-primary">Contas</a></th>
+            <th><a href="{% url 'trees_list' %}" class="btn btn-primary">Plantas</a></th>
+        </tr>
+    </thead>
+</table>
+
+<a href="{% url 'logout' %}" class="btn btn-secondary">Sair</a>
+{% endblock %}
