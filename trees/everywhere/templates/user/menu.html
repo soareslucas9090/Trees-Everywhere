@@ -1,0 +1,17 @@
+{% extends "base.html" %}
+
+{% block title %}Menu{% endblock %}
+
+{% block content %}
+<h1>Escolha sua ação:</h1>
+
+<table>
+    <thead>
+        <tr>
+            <th><a href="{% url 'planted_trees_list' %}" class="btn btn-primary">Visualizar arvores plantadas</a></th>
+        </tr>
+    </thead>
+</table>
+
+<a href="{% url 'logout' %}" class="btn btn-secondary">Sair</a>
+{% endblock %}

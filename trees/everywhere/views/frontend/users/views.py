@@ -9,8 +9,16 @@ from ....models import Account, PlantedTree, Tree
 from ....permissions import IsAdmin
 
 
-@method_decorator(csrf_protect, name="dispatch")
-class CustomLogoutView(View):
-    def get(self, request, *args, **kwargs):
-        logout(request)
-        return redirect("login")
+class MenuUserView(View):
+    def get(self, request):
+        return render(request, "user/menu.html")
+
+
+class PlantedTreeListView(View):
+    def get(self, request):
+        planted_trees = PlantedTree.objects.all()
+        return render(
+            request,
+            "user/lists/planted_tree_list.html",
+            {"planted_trees": planted_trees},
+        )
