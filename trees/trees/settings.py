@@ -76,15 +76,17 @@ ACCOUNT_USERNAME_REQUIRED = False
 
 
 CORS_ORIGIN_WHITELIST = [
-    "https://web-vurkazv8fljz.up-de-fra1-k8s-1.apps.run-on-seenode.com/",
+    "https://web-vurkazv8fljz.up-de-fra1-k8s-1.apps.run-on-seenode.com",
     "https://cloud.seenode.com",
-    "localhost"
+    "http://127.0.0.1",
+    "https://127.0.0.1",
 ]
 
 CORS_ALLOWED_HOSTS = [
     "https://web-vurkazv8fljz.up-de-fra1-k8s-1.apps.run-on-seenode.com/",
     "https://cloud.seenode.com",
-    "localhost",
+    "http://127.0.0.1",
+    "https://127.0.0.1",
 ]
 
 CORS_ALLOW_CREDENTIALS = True
@@ -92,7 +94,8 @@ CORS_ALLOW_CREDENTIALS = True
 CSRF_TRUSTED_ORIGINS = [
     "https://web-vurkazv8fljz.up-de-fra1-k8s-1.apps.run-on-seenode.com/",
     "https://cloud.seenode.com",
-    "localhost",
+    "http://127.0.0.1",
+    "https://127.0.0.1",
 ]
 
 CORS_ALLOW_ALL_ORIGINS: True
@@ -107,7 +110,7 @@ INSTALLED_APPS = [
     "django.contrib.sessions",
     "django.contrib.messages",
     "django.contrib.staticfiles",
-    'corsheaders'
+    "corsheaders",
     "debug_toolbar",
     "rest_framework_simplejwt",
     "rest_framework",
