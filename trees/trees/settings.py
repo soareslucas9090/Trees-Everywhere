@@ -75,6 +75,31 @@ ACCOUNT_EMAIL_REQUIRED = True
 ACCOUNT_USERNAME_REQUIRED = False
 
 
+CORS_ORIGIN_WHITELIST = [
+    "https://web-vurkazv8fljz.up-de-fra1-k8s-1.apps.run-on-seenode.com/",
+    "https://cloud.seenode.com",
+    "localhost"
+]
+
+CORS_ALLOWED_HOSTS = [
+    "https://web-vurkazv8fljz.up-de-fra1-k8s-1.apps.run-on-seenode.com/",
+    "https://cloud.seenode.com",
+    "localhost",
+]
+
+CORS_ALLOW_CREDENTIALS = True
+
+CSRF_TRUSTED_ORIGINS = [
+    "https://web-vurkazv8fljz.up-de-fra1-k8s-1.apps.run-on-seenode.com/",
+    "https://cloud.seenode.com",
+    "localhost",
+]
+
+CORS_ALLOW_ALL_ORIGINS: True
+
+CORS_ALLOW_METHODS = ["*"]
+
+
 INSTALLED_APPS = [
     "django.contrib.admin",
     "django.contrib.auth",
@@ -82,6 +107,7 @@ INSTALLED_APPS = [
     "django.contrib.sessions",
     "django.contrib.messages",
     "django.contrib.staticfiles",
+    'corsheaders'
     "debug_toolbar",
     "rest_framework_simplejwt",
     "rest_framework",
@@ -99,6 +125,8 @@ MIDDLEWARE = [
     "django.contrib.messages.middleware.MessageMiddleware",
     "django.middleware.clickjacking.XFrameOptionsMiddleware",
     "debug_toolbar.middleware.DebugToolbarMiddleware",
+    'corsheaders.middleware.CorsMiddleware',
+    'django.middleware.common.CommonMiddleware',
 ]
 
 ROOT_URLCONF = "trees.urls"
@@ -126,7 +154,11 @@ TEMPLATES = [
 WSGI_APPLICATION = "trees.wsgi.application"
 
 # redirecionamento padrão depois de fazer o login
-LOGIN_REDIRECT_URL = "/"
+LOGIN_REDIRECT_URL = "/everywhere/menu/user/"
+
+SESSION_COOKIE_AGE = 300
+
+SESSION_EXPIRE_AT_BROWSER_CLOSE = False
 
 AUTH_PASSWORD_VALIDATORS = [
     {
