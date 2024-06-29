@@ -4,8 +4,8 @@ from django.utils.decorators import method_decorator
 from django.views import View
 from django.views.decorators.csrf import csrf_protect
 
-from ...forms import AccountForm, UserCreationForm
-from ...models import Account
+from ...forms import AccountForm, TreeForm, UserCreationForm
+from ...models import Account, Tree
 from ...permissions import IsAdmin
 
 
@@ -31,20 +31,20 @@ class Redirect(View):
 class UserCreateView(View):
     def get(self, request):
         form = UserCreationForm()
-        return render(request, "admin/registration_form.html", {"form": form})
+        return render(request, "admin/forms/registration_form.html", {"form": form})
 
     def post(self, request):
         form = UserCreationForm(request.POST)
         if form.is_valid():
             form.save()
             return redirect("user_create")
-        return render(request, "admin/registration_form.html", {"form": form})
+        return render(request, "admin/forms/registration_form.html", {"form": form})
 
 
 class AccountListView(View):
     def get(self, request):
         accounts = Account.objects.all()
-        return render(request, "admin/account_list.html", {"accounts": accounts})
+        return render(request, "admin/lists/account_list.html", {"accounts": accounts})
 
     def post(self, request):
         account_id = request.POST.get("account_id")
@@ -57,11 +57,31 @@ class AccountListView(View):
 class AccountCreateView(View):
     def get(self, request):
         form = AccountForm()
-        return render(request, "admin/account_form.html", {"form": form})
+        return render(request, "admin/forms/account_form.html", {"form": form})
 
     def post(self, request):
         form = AccountForm(request.POST)
         if form.is_valid():
             form.save()
             return redirect("accounts_list")
-        return render(request, "admin/account_form.html", {"form": form})
+        return render(request, "admin/forms/account_form.html", {"form": form})
+
+
+class TreeListView(View):
+    def get(self, request):
+        trees = Tree.objects.all()
+        return render(request, "admin/lists/tree_list.html", {"trees": trees})
+
+
+class TreeCreateView(View):
+    def get(self, request):
+        form = TreeForm()
+        return render(request, "admin/forms/tree_form.html", {"form": form})
+
+    def post(self, request):
+        form = TreeForm(request.POST)
+        if form.is_valid():
+            form.save()
+            print(form)
+            return redirect("trees_list")
+        return render(request, "admin/lists/tree_form.html", {"form": form})

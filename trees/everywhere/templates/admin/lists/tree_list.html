@@ -1,0 +1,24 @@
+{% extends "base.html" %}
+
+{% block title %}Listar Plantas{% endblock %}
+
+{% block content %}
+<h2>Lista de Plantas</h2>
+<table>
+    <thead>
+        <tr>
+            <th>Nome</th>
+            <th>Nome Cientifico</th>
+        </tr>
+    </thead>
+    <tbody>
+        {% for tree in trees %}
+        <tr>
+            <td>{{ tree.name }}</td>
+            <td>{{ tree.scientific_name }}</td>
+        </tr>
+        {% endfor %}
+    </tbody>
+</table>
+<a href="{% url 'tree_create' %}" class="btn btn-primary">Criar Nova Planta</a>
+{% endblock %}

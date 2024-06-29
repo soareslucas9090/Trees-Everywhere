@@ -1,13 +1,9 @@
 from django import forms
 
-from .models import Account, User
+from .models import Account, Tree, User
 
 
 class UserCreationForm(forms.ModelForm):
-    accounts = forms.ModelMultipleChoiceField(
-        queryset=Account.objects.filter(active=True), required=False
-    )
-
     class Meta:
         model = User
         fields = [
@@ -16,6 +12,10 @@ class UserCreationForm(forms.ModelForm):
             "password",
             "accounts",
         ]
+
+    accounts = forms.ModelMultipleChoiceField(
+        queryset=Account.objects.filter(active=True), required=False
+    )
 
     def save(self, commit=True):
         user = super().save(commit=False)
@@ -31,3 +31,9 @@ class AccountForm(forms.ModelForm):
     class Meta:
         model = Account
         fields = ["name", "active"]
+
+
+class TreeForm(forms.ModelForm):
+    class Meta:
+        model = Tree
+        fields = ["name", "scientific_name"]

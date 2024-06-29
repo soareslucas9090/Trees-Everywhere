@@ -14,6 +14,8 @@ from .views.frontend.views import (
     AccountListView,
     CustomLogoutView,
     Redirect,
+    TreeCreateView,
+    TreeListView,
     UserCreateView,
 )
 
@@ -33,4 +35,6 @@ urlpatterns = [
     path("user/create/", UserCreateView.as_view(), name="user_create"),
     path("accounts/", AccountListView.as_view(), name="accounts_list"),
     path("accounts/create/", AccountCreateView.as_view(), name="account_create"),
+    path("trees/", TreeListView.as_view(), name="trees_list"),
+    path("trees/create/", TreeCreateView.as_view(), name="tree_create"),
 ]
