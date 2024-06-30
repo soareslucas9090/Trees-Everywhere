@@ -9,6 +9,8 @@ class ProfileSerializer(serializers.ModelSerializer):
         fields = ["id", "about", "user", "joined"]
         extra_kwargs = {"joined": {"read_only": True}}
 
+    # Makes joined read-only, not allowing editing
+
     user = serializers.PrimaryKeyRelatedField(queryset=User.objects.all())
 
 
@@ -23,6 +25,9 @@ class UserSerializer(serializers.ModelSerializer):
             "password",
             "profile",
         ]
+
+    # In addition to making the password only written, to prevent it from being read
+    # also adds the profile field, which shows the profile associated with the user
 
     password = serializers.CharField(write_only=True)
     accounts = serializers.PrimaryKeyRelatedField(
@@ -39,6 +44,7 @@ class UserSerializer(serializers.ModelSerializer):
             print("Aqui")
             return None
 
+    # Simple validation to password
     def validate_password(self, value):
         password = value
 
@@ -59,6 +65,7 @@ class AccountSerializer(serializers.ModelSerializer):
             "count_users",
         ]
 
+    # Add a field that shows the number of users associated with this account
     count_users = serializers.SerializerMethodField(read_only=True)
 
     def get_count_users(self, obj):
@@ -82,6 +89,7 @@ class TreeSerializer(serializers.ModelSerializer):
         model = Tree
         fields = ["id", "name", "scientific_name", "count_planteds"]
 
+    # Add a field that shows the number of trees planteds
     count_planteds = serializers.SerializerMethodField(read_only=True)
 
     def get_count_planteds(self, obj):
@@ -121,6 +129,8 @@ class PlantedTreeSerializer(serializers.ModelSerializer):
         queryset=Account.objects.all(), allow_empty=False, write_only=True
     )
 
+    # Add a field to show user details, tree details and account details
+
     user_data = serializers.SerializerMethodField(read_only=True)
     tree_data = serializers.SerializerMethodField(read_only=True)
     account_data = serializers.SerializerMethodField(read_only=True)
@@ -154,6 +164,8 @@ class PlantedTreeSerializer(serializers.ModelSerializer):
 
 
 class PlantTree(serializers.Serializer):
+    # Serializer responsible for collecting the information necessary to execute the user.plant_tree() method
+
     tree = serializers.PrimaryKeyRelatedField(
         queryset=Tree.objects.all(), allow_empty=False
     )
@@ -168,10 +180,14 @@ class PlantTree(serializers.Serializer):
 
 
 class PlantTrees(serializers.Serializer):
+    # Serializer que recebe uma lista de dados do tipo PlantTree
+
     plants = serializers.ListSerializer(child=PlantTree())
 
 
 class MyPlants(serializers.ModelSerializer):
+    # Serializer responsible for displaying only trees planted by the user
+
     class Meta:
         model = PlantedTree
         fields = "__all__"
