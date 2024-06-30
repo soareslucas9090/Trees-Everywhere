@@ -37,7 +37,10 @@ class UserViewSet(ModelViewSet):
     permission_classes = [
         IsAdmin,
     ]
+    # Access only if user.is_admin = True
     http_method_names = ["get", "head", "patch", "delete", "post"]
+
+    # The API gives the option to search by name and accounts that the user is part of
 
     def get_queryset(self):
         queryset = super().get_queryset()
@@ -91,7 +94,10 @@ class AccountViewSet(ModelViewSet):
     permission_classes = [
         IsAdmin,
     ]
+    # Access only if user.is_admin = True
     http_method_names = ["get", "head", "patch", "delete", "post"]
+
+    # The API gives the option to search by name and active status
 
     def get_queryset(self):
         queryset = super().get_queryset()
@@ -150,7 +156,10 @@ class ProfileViewSet(ModelViewSet):
     permission_classes = [
         IsAdmin,
     ]
+    # Access only if user.is_admin = True
     http_method_names = ["get", "head", "patch", "delete", "post"]
+
+    # The create method is overridden to make joined receive the same as user.date_joined
 
     def create(self, request, *args, **kwargs):
         serializer = self.get_serializer(data=request.data)
@@ -190,7 +199,10 @@ class TreeViewSet(ModelViewSet):
     permission_classes = [
         IsAdmin,
     ]
+    # Access only if user.is_admin = True
     http_method_names = ["get", "head", "patch", "delete", "post"]
+
+    # The API gives the option to search by the name and scientific name of the tree
 
     def get_queryset(self):
         queryset = super().get_queryset()
@@ -244,7 +256,11 @@ class PlantedTreeViewSet(ModelViewSet):
     permission_classes = [
         IsAdmin,
     ]
+    # Access only if user.is_admin = True
     http_method_names = ["get", "head", "patch", "delete", "post"]
+
+    # The API allows searching by user id, username, tree id, tree name,
+    # scientific tree name, account id and account name
 
     def get_queryset(self):
         queryset = super().get_queryset()
@@ -357,7 +373,10 @@ class PlantTreeViewSet(mixins.CreateModelMixin, GenericViewSet):
     permission_classes = [
         IsNormalUser,
     ]
+    # Access only if user.is_admin = False
     http_method_names = ["post"]
+
+    # Overridden create method for creating a tree using the user.plant_tree() method
 
     def create(self, request, *args, **kwargs):
         serializer = self.get_serializer(data=request.data)
@@ -384,7 +403,10 @@ class PlantTreesViewSet(mixins.CreateModelMixin, GenericViewSet):
     permission_classes = [
         IsNormalUser,
     ]
+    # Access only if user.is_admin = False
     http_method_names = ["post"]
+
+    # Overridden creation method to create multiple trees using user.plant_trees() method
 
     def create(self, request, *args, **kwargs):
         serializer = self.get_serializer(data=request.data)
@@ -406,7 +428,10 @@ class MyPlantsViewSet(mixins.ListModelMixin, GenericViewSet):
     permission_classes = [
         IsNormalUser,
     ]
+    # Access only if user.is_admin = False
     http_method_names = ["get"]
+
+    # Overridden get_queryset method to return only trees planted by the user
 
     def get_queryset(self):
         return PlantedTree.objects.filter(user=self.request.user)
