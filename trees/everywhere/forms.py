@@ -19,7 +19,6 @@ class UserCreationForm(forms.ModelForm):
 
     def save(self, commit=True):
         user = super().save(commit=False)
-        user.set_password(self.cleaned_data["password"])
         if commit:
             user.save()
             self.save_m2m()
