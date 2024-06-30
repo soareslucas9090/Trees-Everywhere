@@ -107,6 +107,8 @@ class PlantedTreeSerializer(serializers.ModelSerializer):
             "tree_data",
             "account",
             "account_data",
+            "latitude",
+            "longitude",
         ]
 
     user = serializers.PrimaryKeyRelatedField(
@@ -149,3 +151,21 @@ class PlantedTreeSerializer(serializers.ModelSerializer):
             return dict
         except:
             return None
+
+
+class PlantTree(serializers.Serializer):
+    tree = serializers.PrimaryKeyRelatedField(
+        queryset=Tree.objects.all(), allow_empty=False
+    )
+    location = serializers.ListField(
+        child=serializers.DecimalField(max_digits=9, decimal_places=6),
+        allow_empty=False,
+    )
+    age = serializers.IntegerField()
+    account = serializers.PrimaryKeyRelatedField(
+        queryset=Account.objects.all(), allow_empty=False
+    )
+
+
+class PlantTrees(serializers.Serializer):
+    plants = serializers.ListSerializer(child=PlantTree())

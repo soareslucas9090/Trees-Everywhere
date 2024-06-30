@@ -1,3 +1,5 @@
+from decimal import Decimal
+
 from django.contrib.auth.hashers import check_password, make_password
 from django.contrib.auth.models import (
     AbstractBaseUser,
@@ -5,7 +7,7 @@ from django.contrib.auth.models import (
     Permission,
     PermissionsMixin,
 )
-from django.db import models
+from django.db import models, transaction
 
 
 class Account(models.Model):
@@ -105,6 +107,37 @@ class User(AbstractBaseUser, PermissionsMixin):
         verbose_name = "user"
         verbose_name_plural = "users"
 
+    def plant_tree(self, tree, location, age, account):
+        if isinstance(tree, int):
+            PlantedTree.objects.create(
+                user=self,
+                tree=Tree.objects.get(id=tree),
+                latitude=location[0],
+                longitude=location[1],
+                age=age,
+                account=Account.objects.get(id=account),
+            )
+        else:
+            latitude = location.value[0]
+            longitude = location.value[1]
+            PlantedTree.objects.create(
+                user=self,
+                tree=Tree.objects.get(id=tree.value),
+                latitude=latitude,
+                longitude=longitude,
+                age=age.value,
+                account=Account.objects.get(id=account.value),
+            )
+
+    @transaction.atomic
+    def plant_trees(self, trees_to_plant):
+        for tree_to_plant in trees_to_plant.value:
+            tree = tree_to_plant["tree"]
+            location = tree_to_plant["location"]
+            age = tree_to_plant["age"]
+            account = tree_to_plant["account"]
+            self.plant_tree(tree, location, age, account)
+
 
 class Account_User(models.Model):
     account = models.ForeignKey(
@@ -156,6 +189,8 @@ class PlantedTree(models.Model):
         on_delete=models.RESTRICT,
         null=False,
     )
+    latitude = models.DecimalField(max_digits=9, decimal_places=6, null=False)
+    longitude = models.DecimalField(max_digits=9, decimal_places=6, null=False)
 
     def __str__(self):
         return f"User: {self.user}, Tree: {self.tree}"

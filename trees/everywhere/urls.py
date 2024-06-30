@@ -5,6 +5,8 @@ from rest_framework.routers import SimpleRouter
 from .views.api.views import (
     AccountViewSet,
     PlantedTreeViewSet,
+    PlantTreesViewSet,
+    PlantTreeViewSet,
     ProfileViewSet,
     TreeViewSet,
     UserViewSet,
@@ -33,6 +35,8 @@ everywhere_router.register("accounts", AccountViewSet)
 everywhere_router.register("profiles", ProfileViewSet)
 everywhere_router.register("trees", TreeViewSet)
 everywhere_router.register("plantedtrees", PlantedTreeViewSet)
+everywhere_router.register("planttree", PlantTreeViewSet, basename="planttree")
+everywhere_router.register("planttrees", PlantTreesViewSet, basename="planttrees")
 
 urlpatterns = [
     ####### API #######

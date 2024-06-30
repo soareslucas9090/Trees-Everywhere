@@ -1,13 +1,15 @@
-from rest_framework import status
+from rest_framework import mixins, status
 from rest_framework.permissions import AllowAny, IsAuthenticated
 from rest_framework.response import Response
-from rest_framework.viewsets import ModelViewSet
+from rest_framework.viewsets import GenericViewSet, ModelViewSet
 
 from ...models import Account, PlantedTree, Profile, Tree, User
-from ...permissions import IsAdmin
+from ...permissions import IsAdmin, IsNormalUser
 from ...serializers import (
     AccountSerializer,
     PlantedTreeSerializer,
+    PlantTree,
+    PlantTrees,
     ProfileSerializer,
     TreeSerializer,
     UserSerializer,
@@ -79,3 +81,44 @@ class PlantedTreeViewSet(ModelViewSet):
         IsAdmin,
     ]
     http_method_names = ["get", "head", "patch", "delete", "post"]
+
+
+class PlantTreeViewSet(mixins.CreateModelMixin, GenericViewSet):
+    queryset = PlantedTree.objects.all()
+    serializer_class = PlantTree
+    permission_classes = [
+        IsNormalUser,
+    ]
+    http_method_names = ["post"]
+
+    def create(self, request, *args, **kwargs):
+        serializer = self.get_serializer(data=request.data)
+        serializer.is_valid(raise_exception=True)
+        request.user.plant_tree(
+            tree=serializer["tree"],
+            location=serializer["location"],
+            age=serializer["age"],
+            account=serializer["account"],
+        )
+        headers = self.get_success_headers(serializer.data)
+        return Response(
+            serializer.data, status=status.HTTP_201_CREATED, headers=headers
+        )
+
+
+class PlantTreesViewSet(mixins.CreateModelMixin, GenericViewSet):
+    queryset = PlantedTree.objects.all()
+    serializer_class = PlantTrees
+    permission_classes = [
+        IsNormalUser,
+    ]
+    http_method_names = ["post"]
+
+    def create(self, request, *args, **kwargs):
+        serializer = self.get_serializer(data=request.data)
+        serializer.is_valid(raise_exception=True)
+        request.user.plant_trees(trees_to_plant=serializer["plants"])
+        headers = self.get_success_headers(serializer.data)
+        return Response(
+            serializer.data, status=status.HTTP_201_CREATED, headers=headers
+        )

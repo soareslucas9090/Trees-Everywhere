@@ -11,6 +11,15 @@ class IsAdmin(permissions.BasePermission):
             return request.user.is_admin
 
 
+class IsNormalUser(permissions.BasePermission):
+
+    def has_permission(self, request, view):
+        if isinstance(request.user, AnonymousUser):
+            return False
+        else:
+            return not request.user.is_admin
+
+
 class AllowAny(permissions.BasePermission):
     def has_permission(self, request, view):
         return True
