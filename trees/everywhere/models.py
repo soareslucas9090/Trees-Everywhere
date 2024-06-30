@@ -117,6 +117,15 @@ class User(AbstractBaseUser, PermissionsMixin):
                 age=age,
                 account=Account.objects.get(id=account),
             )
+        elif isinstance(tree, Tree):
+            PlantedTree.objects.create(
+                user=self,
+                tree=tree,
+                latitude=location[0],
+                longitude=location[1],
+                age=age,
+                account=account,
+            )
         else:
             latitude = location.value[0]
             longitude = location.value[1]

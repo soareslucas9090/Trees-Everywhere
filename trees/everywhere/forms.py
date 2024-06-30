@@ -42,7 +42,7 @@ class TreeForm(forms.ModelForm):
 class PlantedTreeForm(forms.ModelForm):
     class Meta:
         model = PlantedTree
-        fields = ["age", "tree", "account"]
+        fields = ["age", "tree", "account", "latitude", "longitude"]
 
     def get_form(self):
         if self.is_valid():
@@ -61,3 +61,5 @@ class PlantedTreeForm(forms.ModelForm):
             )
 
     tree = forms.ModelChoiceField(queryset=Tree.objects.all(), required=True)
+    latitude = forms.DecimalField()
+    longitude = forms.DecimalField()

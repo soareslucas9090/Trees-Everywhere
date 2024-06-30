@@ -8,10 +8,12 @@ from ....forms import AccountForm, PlantedTreeForm, TreeForm, UserCreationForm
 from ....models import Account, PlantedTree, Tree
 from ....permissions import IsAdmin
 
+
 @method_decorator(csrf_protect, name="dispatch")
 class MenuUserView(View):
     def get(self, request):
         return render(request, "user/menu.html")
+
 
 @method_decorator(csrf_protect, name="dispatch")
 class PlantedTreeListView(View):
@@ -23,6 +25,7 @@ class PlantedTreeListView(View):
             {"planted_trees": planted_trees},
         )
 
+
 @method_decorator(csrf_protect, name="dispatch")
 class PlantedTreeDetailView(View):
     def get(self, request, pk):
@@ -32,6 +35,7 @@ class PlantedTreeDetailView(View):
             "user/detail/planted_tree_detail.html",
             {"planted_tree": planted_tree},
         )
+
 
 @method_decorator(csrf_protect, name="dispatch")
 class PlantedTreeCreateView(View):
@@ -43,20 +47,26 @@ class PlantedTreeCreateView(View):
         form = PlantedTreeForm(request.POST, user=request.user)
         if form.is_valid():
             data_form = form.get_form()
-            PlantedTree.objects.create(
-                age=data_form["age"],
-                user=request.user,
+            latitude = data_form["latitude"]
+            longitude = data_form["longitude"]
+            location = [latitude, longitude]
+            request.user.plant_tree(
                 tree=data_form["tree"],
+                location=location,
+                age=data_form["age"],
                 account=data_form["account"],
             )
             return redirect("planted_trees_list")
 
         return render(request, "user/forms/planted_tree_forms.html", {"form": form})
 
+
 @method_decorator(csrf_protect, name="dispatch")
 class PlantedTreeAccountsView(View):
     def get(self, request):
-        planted_trees = PlantedTree.objects.filter(account__in=request.user.accounts.all())
+        planted_trees = PlantedTree.objects.filter(
+            account__in=request.user.accounts.all()
+        )
 
         return render(
             request,
