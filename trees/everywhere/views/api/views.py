@@ -70,6 +70,47 @@ class AccountViewSet(ModelViewSet):
     ]
     http_method_names = ["get", "head", "patch", "delete", "post"]
 
+    def get_queryset(self):
+        queryset = super().get_queryset()
+
+        name = self.request.query_params.get("name", None)
+
+        if name:
+            queryset = queryset.filter(name__icontais=name)
+
+        active = self.request.query_params.get("active", None)
+
+        if active:
+            if active.lower() == "false":
+                active = "false"
+            elif active.lower() == "true":
+                active = "true"
+
+            queryset = queryset.filter(active=active)
+
+        return queryset
+
+    @extend_schema(
+        parameters=[
+            OpenApiParameter(
+                name="name",
+                type=OpenApiTypes.STR,
+                description="Filter by name",
+                required=False,
+                location=OpenApiParameter.QUERY,
+            ),
+            OpenApiParameter(
+                name="active",
+                type=OpenApiTypes.BOOL,
+                description="Filter by active state",
+                required=False,
+                location=OpenApiParameter.QUERY,
+            ),
+        ],
+    )
+    def list(self, request, *args, **kwargs):
+        return super().list(request, *args, **kwargs)
+
 
 class ProfileViewSet(ModelViewSet):
     queryset = Profile.objects.all()
