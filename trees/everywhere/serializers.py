@@ -169,3 +169,9 @@ class PlantTree(serializers.Serializer):
 
 class PlantTrees(serializers.Serializer):
     plants = serializers.ListSerializer(child=PlantTree())
+
+
+class MyPlants(serializers.ModelSerializer):
+    class Meta:
+        model = PlantedTree
+        fields = "__all__"

@@ -7,6 +7,7 @@ from ...models import Account, PlantedTree, Profile, Tree, User
 from ...permissions import IsAdmin, IsNormalUser
 from ...serializers import (
     AccountSerializer,
+    MyPlants,
     PlantedTreeSerializer,
     PlantTree,
     PlantTrees,
@@ -122,3 +123,15 @@ class PlantTreesViewSet(mixins.CreateModelMixin, GenericViewSet):
         return Response(
             serializer.data, status=status.HTTP_201_CREATED, headers=headers
         )
+
+
+class MyPlantsViewSet(mixins.ListModelMixin, GenericViewSet):
+    queryset = PlantedTree.objects.all()
+    serializer_class = MyPlants
+    permission_classes = [
+        IsNormalUser,
+    ]
+    http_method_names = ["get"]
+
+    def get_queryset(self):
+        return PlantedTree.objects.filter(user=self.request.user)
