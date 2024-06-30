@@ -1,5 +1,5 @@
+from drf_spectacular.utils import OpenApiParameter, OpenApiTypes, extend_schema
 from rest_framework import mixins, status
-from rest_framework.permissions import AllowAny, IsAuthenticated
 from rest_framework.response import Response
 from rest_framework.viewsets import GenericViewSet, ModelViewSet
 
@@ -24,6 +24,42 @@ class UserViewSet(ModelViewSet):
         IsAdmin,
     ]
     http_method_names = ["get", "head", "patch", "delete", "post"]
+
+    def get_queryset(self):
+        queryset = super().get_queryset()
+
+        account = self.request.query_params.get("account", None)
+
+        if account:
+            queryset = queryset.filter(accounts__id=account)
+
+        name = self.request.query_params.get("name", None)
+
+        if name:
+            queryset = queryset.filter(name__icontains=name)
+
+        return queryset
+
+    @extend_schema(
+        parameters=[
+            OpenApiParameter(
+                name="account",
+                type=OpenApiTypes.INT,
+                description="Filter by account",
+                required=False,
+                location=OpenApiParameter.QUERY,
+            ),
+            OpenApiParameter(
+                name="name",
+                type=OpenApiTypes.STR,
+                description="Filter by name",
+                required=False,
+                location=OpenApiParameter.QUERY,
+            ),
+        ],
+    )
+    def list(self, request, *args, **kwargs):
+        return super().list(request, *args, **kwargs)
 
 
 class AccountViewSet(ModelViewSet):
