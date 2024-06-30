@@ -41,9 +41,9 @@ everywhere_router.register("planttrees", PlantTreesViewSet, basename="planttrees
 everywhere_router.register("myplants", MyPlantsViewSet, basename="myplants")
 
 urlpatterns = [
-    ####### API #######
+    ############## API ##############
     path("api/v1/", include(everywhere_router.urls)),
-    ####### Front #######
+    ############## Front ##############
     ####### Auth #######
     path("", RedirectView.as_view(), name="start"),
     path("login/", auth_views.LoginView.as_view(), name="login"),
