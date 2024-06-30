@@ -17,6 +17,7 @@ from ...serializers import (
 )
 
 
+@extend_schema(description="Only users with administrator permissions.")
 class UserViewSet(ModelViewSet):
     queryset = User.objects.all()
     serializer_class = UserSerializer
@@ -62,6 +63,7 @@ class UserViewSet(ModelViewSet):
         return super().list(request, *args, **kwargs)
 
 
+@extend_schema(description="Only users with administrator permissions.")
 class AccountViewSet(ModelViewSet):
     queryset = Account.objects.all()
     serializer_class = AccountSerializer
@@ -112,6 +114,7 @@ class AccountViewSet(ModelViewSet):
         return super().list(request, *args, **kwargs)
 
 
+@extend_schema(description="Only users with administrator permissions.")
 class ProfileViewSet(ModelViewSet):
     queryset = Profile.objects.all()
     serializer_class = ProfileSerializer
@@ -143,6 +146,7 @@ class ProfileViewSet(ModelViewSet):
         )
 
 
+@extend_schema(description="Only users with administrator permissions.")
 class TreeViewSet(ModelViewSet):
     queryset = Tree.objects.all()
     serializer_class = TreeSerializer
@@ -188,6 +192,7 @@ class TreeViewSet(ModelViewSet):
         return super().list(request, *args, **kwargs)
 
 
+@extend_schema(description="Only users with administrator permissions.")
 class PlantedTreeViewSet(ModelViewSet):
     queryset = PlantedTree.objects.all()
     serializer_class = PlantedTreeSerializer
@@ -297,6 +302,7 @@ class PlantedTreeViewSet(ModelViewSet):
         return super().list(request, *args, **kwargs)
 
 
+@extend_schema(description="Regular users only.")
 class PlantTreeViewSet(mixins.CreateModelMixin, GenericViewSet):
     queryset = PlantedTree.objects.all()
     serializer_class = PlantTree
@@ -320,6 +326,7 @@ class PlantTreeViewSet(mixins.CreateModelMixin, GenericViewSet):
         )
 
 
+@extend_schema(description="Regular users only.")
 class PlantTreesViewSet(mixins.CreateModelMixin, GenericViewSet):
     queryset = PlantedTree.objects.all()
     serializer_class = PlantTrees
@@ -338,6 +345,7 @@ class PlantTreesViewSet(mixins.CreateModelMixin, GenericViewSet):
         )
 
 
+@extend_schema(description="Regular users only.")
 class MyPlantsViewSet(mixins.ListModelMixin, GenericViewSet):
     queryset = PlantedTree.objects.all()
     serializer_class = MyPlants
