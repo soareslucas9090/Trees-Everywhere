@@ -151,6 +151,42 @@ class TreeViewSet(ModelViewSet):
     ]
     http_method_names = ["get", "head", "patch", "delete", "post"]
 
+    def get_queryset(self):
+        queryset = super().get_queryset()
+
+        name = self.request.query_params.get("name", None)
+
+        if name:
+            queryset = queryset.filter(name__icontais=name)
+
+        scientific_name = self.request.query_params.get("scientific_name", None)
+
+        if scientific_name:
+            queryset = queryset.filter(scientific_name__icontais=scientific_name)
+
+        return queryset
+
+    @extend_schema(
+        parameters=[
+            OpenApiParameter(
+                name="name",
+                type=OpenApiTypes.STR,
+                description="Filter by name",
+                required=False,
+                location=OpenApiParameter.QUERY,
+            ),
+            OpenApiParameter(
+                name="scientific_name",
+                type=OpenApiTypes.STR,
+                description="Filter by scientific name",
+                required=False,
+                location=OpenApiParameter.QUERY,
+            ),
+        ],
+    )
+    def list(self, request, *args, **kwargs):
+        return super().list(request, *args, **kwargs)
+
 
 class PlantedTreeViewSet(ModelViewSet):
     queryset = PlantedTree.objects.all()
@@ -159,6 +195,106 @@ class PlantedTreeViewSet(ModelViewSet):
         IsAdmin,
     ]
     http_method_names = ["get", "head", "patch", "delete", "post"]
+
+    def get_queryset(self):
+        queryset = super().get_queryset()
+
+        user = self.request.query_params.get("user", None)
+
+        if user:
+            queryset = queryset.filter(user=user)
+
+        user_name = self.request.query_params.get("user_name", None)
+
+        if user_name:
+            queryset = queryset.filter(user__name__icontains=user_name)
+
+        tree = self.request.query_params.get("tree", None)
+
+        if tree:
+            queryset = queryset.filter(tree=tree)
+
+        tree_name = self.request.query_params.get("tree_name", None)
+
+        if tree_name:
+            queryset = queryset.filter(tree__name__icontains=tree_name)
+
+        tree_scientific_name = self.request.query_params.get(
+            "tree_scientific_name", None
+        )
+
+        if tree_scientific_name:
+            queryset = queryset.filter(
+                tree__scientific_name__icontains=tree_scientific_name
+            )
+
+        account = self.request.query_params.get("account", None)
+
+        if account:
+            queryset = queryset.filter(account=account)
+
+        account_name = self.request.query_params.get("account_name", None)
+
+        if account_name:
+            queryset = queryset.filter(account__name__icontains=account_name)
+
+        return queryset
+
+    @extend_schema(
+        parameters=[
+            OpenApiParameter(
+                name="user",
+                type=OpenApiTypes.INT,
+                description="Filter by user",
+                required=False,
+                location=OpenApiParameter.QUERY,
+            ),
+            OpenApiParameter(
+                name="user_name",
+                type=OpenApiTypes.STR,
+                description="Filter by user name",
+                required=False,
+                location=OpenApiParameter.QUERY,
+            ),
+            OpenApiParameter(
+                name="tree",
+                type=OpenApiTypes.INT,
+                description="Filter by tree",
+                required=False,
+                location=OpenApiParameter.QUERY,
+            ),
+            OpenApiParameter(
+                name="tree_name",
+                type=OpenApiTypes.STR,
+                description="Filter by tree name",
+                required=False,
+                location=OpenApiParameter.QUERY,
+            ),
+            OpenApiParameter(
+                name="tree_scientific_name",
+                type=OpenApiTypes.STR,
+                description="Filter by tree scientific name",
+                required=False,
+                location=OpenApiParameter.QUERY,
+            ),
+            OpenApiParameter(
+                name="account",
+                type=OpenApiTypes.INT,
+                description="Filter by account",
+                required=False,
+                location=OpenApiParameter.QUERY,
+            ),
+            OpenApiParameter(
+                name="account_name",
+                type=OpenApiTypes.STR,
+                description="Filter by account name",
+                required=False,
+                location=OpenApiParameter.QUERY,
+            ),
+        ],
+    )
+    def list(self, request, *args, **kwargs):
+        return super().list(request, *args, **kwargs)
 
 
 class PlantTreeViewSet(mixins.CreateModelMixin, GenericViewSet):
