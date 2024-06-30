@@ -1,4 +1,9 @@
-from drf_spectacular.utils import OpenApiParameter, OpenApiTypes, extend_schema
+from drf_spectacular.utils import (
+    OpenApiParameter,
+    OpenApiTypes,
+    extend_schema,
+    extend_schema_view,
+)
 from rest_framework import mixins, status
 from rest_framework.response import Response
 from rest_framework.viewsets import GenericViewSet, ModelViewSet
@@ -17,6 +22,14 @@ from ...serializers import (
 )
 
 
+@extend_schema_view(
+    list=extend_schema(tags=["Users"]),
+    retrieve=extend_schema(tags=["Users"]),
+    create=extend_schema(tags=["Users"]),
+    update=extend_schema(tags=["Users"]),
+    partial_update=extend_schema(tags=["Users"]),
+    destroy=extend_schema(tags=["Users"]),
+)
 @extend_schema(description="Only users with administrator permissions.")
 class UserViewSet(ModelViewSet):
     queryset = User.objects.all()
@@ -63,6 +76,14 @@ class UserViewSet(ModelViewSet):
         return super().list(request, *args, **kwargs)
 
 
+@extend_schema_view(
+    list=extend_schema(tags=["Accounts"]),
+    retrieve=extend_schema(tags=["Accounts"]),
+    create=extend_schema(tags=["Accounts"]),
+    update=extend_schema(tags=["Accounts"]),
+    partial_update=extend_schema(tags=["Accounts"]),
+    destroy=extend_schema(tags=["Accounts"]),
+)
 @extend_schema(description="Only users with administrator permissions.")
 class AccountViewSet(ModelViewSet):
     queryset = Account.objects.all()
@@ -114,6 +135,14 @@ class AccountViewSet(ModelViewSet):
         return super().list(request, *args, **kwargs)
 
 
+@extend_schema_view(
+    list=extend_schema(tags=["Profiles"]),
+    retrieve=extend_schema(tags=["Profiles"]),
+    create=extend_schema(tags=["Profiles"]),
+    update=extend_schema(tags=["Profiles"]),
+    partial_update=extend_schema(tags=["Profiles"]),
+    destroy=extend_schema(tags=["Profiles"]),
+)
 @extend_schema(description="Only users with administrator permissions.")
 class ProfileViewSet(ModelViewSet):
     queryset = Profile.objects.all()
@@ -146,6 +175,14 @@ class ProfileViewSet(ModelViewSet):
         )
 
 
+@extend_schema_view(
+    list=extend_schema(tags=["Trees"]),
+    retrieve=extend_schema(tags=["Trees"]),
+    create=extend_schema(tags=["Trees"]),
+    update=extend_schema(tags=["Trees"]),
+    partial_update=extend_schema(tags=["Trees"]),
+    destroy=extend_schema(tags=["Trees"]),
+)
 @extend_schema(description="Only users with administrator permissions.")
 class TreeViewSet(ModelViewSet):
     queryset = Tree.objects.all()
@@ -192,6 +229,14 @@ class TreeViewSet(ModelViewSet):
         return super().list(request, *args, **kwargs)
 
 
+@extend_schema_view(
+    list=extend_schema(tags=["PlantedTrees"]),
+    retrieve=extend_schema(tags=["PlantedTrees"]),
+    create=extend_schema(tags=["PlantedTrees"]),
+    update=extend_schema(tags=["PlantedTrees"]),
+    partial_update=extend_schema(tags=["PlantedTrees"]),
+    destroy=extend_schema(tags=["PlantedTrees"]),
+)
 @extend_schema(description="Only users with administrator permissions.")
 class PlantedTreeViewSet(ModelViewSet):
     queryset = PlantedTree.objects.all()
@@ -302,6 +347,9 @@ class PlantedTreeViewSet(ModelViewSet):
         return super().list(request, *args, **kwargs)
 
 
+@extend_schema_view(
+    create=extend_schema(tags=["PlantTree"]),
+)
 @extend_schema(description="Regular users only.")
 class PlantTreeViewSet(mixins.CreateModelMixin, GenericViewSet):
     queryset = PlantedTree.objects.all()
@@ -326,6 +374,9 @@ class PlantTreeViewSet(mixins.CreateModelMixin, GenericViewSet):
         )
 
 
+@extend_schema_view(
+    create=extend_schema(tags=["PlantTrees"]),
+)
 @extend_schema(description="Regular users only.")
 class PlantTreesViewSet(mixins.CreateModelMixin, GenericViewSet):
     queryset = PlantedTree.objects.all()
@@ -345,6 +396,9 @@ class PlantTreesViewSet(mixins.CreateModelMixin, GenericViewSet):
         )
 
 
+@extend_schema_view(
+    list=extend_schema(tags=["MyPlants"]),
+)
 @extend_schema(description="Regular users only.")
 class MyPlantsViewSet(mixins.ListModelMixin, GenericViewSet):
     queryset = PlantedTree.objects.all()
