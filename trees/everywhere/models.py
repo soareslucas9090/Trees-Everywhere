@@ -153,12 +153,20 @@ class User(AbstractBaseUser, PermissionsMixin):
 
     @transaction.atomic
     def plant_trees(self, trees_to_plant):
-        for tree_to_plant in trees_to_plant.value:
-            tree = tree_to_plant["tree"]
-            location = tree_to_plant["location"]
-            age = tree_to_plant["age"]
-            account = tree_to_plant["account"]
-            self.plant_tree(tree, location, age, account)
+        try:
+            for tree_to_plant in trees_to_plant.value:
+                tree = tree_to_plant["tree"]
+                location = tree_to_plant["location"]
+                age = tree_to_plant["age"]
+                account = tree_to_plant["account"]
+                self.plant_tree(tree, location, age, account)
+        except:
+            for tree_to_plant in trees_to_plant:
+                tree = tree_to_plant["tree"]
+                location = tree_to_plant["location"]
+                age = tree_to_plant["age"]
+                account = tree_to_plant["account"]
+                self.plant_tree(tree, location, age, account)
 
 
 class Account_User(models.Model):
