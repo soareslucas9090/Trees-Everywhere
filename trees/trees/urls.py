@@ -30,7 +30,6 @@ urlpatterns = [
         SpectacularRedocView.as_view(url_name="schema"),
         name="redoc",
     ),
-    path("__debug__/", include("debug_toolbar.urls")),
     path("everywhere/", include("everywhere.urls")),
     path("", RedirectView.as_view(url="/everywhere/", permanent=True)),
 ] + static(settings.STATIC_URL, document_root=settings.STATIC_ROOT)

@@ -1,4 +1,5 @@
 import os
+import sys
 from datetime import timedelta
 from pathlib import Path
 
@@ -67,6 +68,11 @@ else:
     }
     signing_key = secretKeyJWT
 
+if "test" in sys.argv or "test_coverage" in sys.argv:
+    DATABASES["default"] = {
+        "ENGINE": "django.db.backends.sqlite3",
+        "NAME": ":memory:",
+    }
 
 AUTH_USER_MODEL = "everywhere.User"
 ACCOUNT_AUTHENTICATION_METHOD = "email"
@@ -111,7 +117,6 @@ INSTALLED_APPS = [
     "django.contrib.messages",
     "django.contrib.staticfiles",
     "corsheaders",
-    "debug_toolbar",
     "rest_framework_simplejwt",
     "rest_framework",
     "drf_spectacular",
@@ -127,16 +132,15 @@ MIDDLEWARE = [
     "django.contrib.auth.middleware.AuthenticationMiddleware",
     "django.contrib.messages.middleware.MessageMiddleware",
     "django.middleware.clickjacking.XFrameOptionsMiddleware",
-    "debug_toolbar.middleware.DebugToolbarMiddleware",
-    'corsheaders.middleware.CorsMiddleware',
-    'django.middleware.common.CommonMiddleware',
+    "corsheaders.middleware.CorsMiddleware",
+    "django.middleware.common.CommonMiddleware",
 ]
 
 ROOT_URLCONF = "trees.urls"
 
 INTERNAL_IPS = [
     "127.0.0.1",
-    "https://web-vurkazv8fljz.up-de-fra1-k8s-1.apps.run-on-seenode.com"
+    "https://web-vurkazv8fljz.up-de-fra1-k8s-1.apps.run-on-seenode.com",
 ]
 
 TEMPLATES = [
@@ -213,8 +217,8 @@ REST_FRAMEWORK = {
 
 
 SIMPLE_JWT = {
-    "ACCESS_TOKEN_LIFETIME": timedelta(minutes=20),
-    "REFRESH_TOKEN_LIFETIME": timedelta(minutes=120),
+    "ACCESS_TOKEN_LIFETIME": timedelta(minutes=60),
+    "REFRESH_TOKEN_LIFETIME": timedelta(minutes=140),
     "BLACKLIST_AFTER_ROTATION": False,
     "SIGNING_KEY": signing_key,
     "AUTH_HEADER_TYPES": ("Bearer",),
