@@ -11,7 +11,7 @@ Infelizmente o serviço não está mais carregando arquivos estáticos, então a
 
 A API foi implementada com autenticação SimpleJWT, usando Django Rest Framework, a documentação foi feita com Swagger, via DRF-Spectacular, sendo totalmente funcional e testável. Para isso, basta apenas fazer login (com qualquer um dos usuário fornecidos abaixo) e autenticar (usado o padrão Bearer access_token). Para testar a documentação da API é necessário baixar o projeto e rodar offline, pois como dito, o serviço online parou de aceitar o deploy de arquivos estáticos, e não tenho nenhum servidor para este fim.
 
-![Rotas de atenticação](https://imgur.com/d0BpSwj)
+<img src="https://imgur.com/d0BpSwj" alt="Rotas para autenticação">
 
 Foram implementados filtros de pesquisa (query-params) em todas as rotas pertecentes a usuários do tipo Admin, para facilitar o manuseio do sistema.
 
