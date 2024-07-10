@@ -5,17 +5,19 @@ Este é meu projeto para o desafio técnico da YouShop.
 Peço desculpas desde já por entregar sem estilização nos templates, não sou muito bom com frontend, então fiz apenas o básico, mas espero ter compensado implementando um sistema de API bem completo e com bem mais tarefas do que as pedidas. Fiz para mostrar o meu verdadeiro forte, que é Backend e APIRest.
 O projeto está em deploy e com banco de dados online, apenas acessar o caminho: 
 https://web-vurkazv8fljz.up-de-fra1-k8s-1.apps.run-on-seenode.com/
-Infelizmente o serviço não está mais carregando arquivos estáticos, então as rotas de API só são testáveis via POSTMan / Insomnia, mas todas as rotas do frontend estão funcionando pelo navegador.
+O serviço está funcionando corretamente online.
+Também é possível acessar as rotas da API normalmente com POSTMan/Insomnia, além da documentação online.
 
 ## API
 
-A API foi implementada com autenticação SimpleJWT, usando Django Rest Framework, a documentação foi feita com Swagger, via DRF-Spectacular, sendo totalmente funcional e testável. Para isso, basta apenas fazer login (com qualquer um dos usuário fornecidos abaixo) e autenticar (usado o padrão Bearer access_token). Para testar a documentação da API é necessário baixar o projeto e rodar offline, pois como dito, o serviço online parou de aceitar o deploy de arquivos estáticos, e não tenho nenhum servidor para este fim.
+A API foi implementada com autenticação SimpleJWT, usando Django Rest Framework, a documentação foi feita com Swagger, via DRF-Spectacular, sendo totalmente funcional e testável. Para isso, basta apenas fazer login (com qualquer um dos usuário fornecidos abaixo) e autenticar (usado o padrão Bearer access_token). Os commits do dia 10/07/24 foram destinados apenas a instalação do middleware Whitenoise, pois descobri que o meu servidor de deploy agora necessita deste middleware para carregar arquivos estáticos do Django
 
 <img src="https://i.imgur.com/d0BpSwj.png" alt="Rotas para autenticação">
 
 Foram implementados filtros de pesquisa (query-params) em todas as rotas pertecentes a usuários do tipo Admin, para facilitar o manuseio do sistema.
 
 A documentação está na rota `/api/schema/swagger/`
+Por consequência, documentação online pode ser acessada em `https://web-vurkazv8fljz.up-de-fra1-k8s-1.apps.run-on-seenode.com/api/schema/swagger/`
 
 ## Frontend
 
@@ -45,7 +47,8 @@ E rodar o projeto com `python manage.py runserver`
 
 Foram concluidos todos os 4 testes. Estão configurados para rodar em uma instância local do SQLite.
 Comando para rodar os testes: `python manage.py test everywhere.tests`
-Hoje (01/07/2024) pretendo subir mais testes para a API, que não foi pedido na tarefa, mas ainda irei concluir o código.
+---Hoje (01/07/2024) pretendo subir mais testes para a API, que não foi pedido na tarefa, mas ainda irei concluir o código.---
+Preferi não subir mais testes até o retorno da equipe da Youshop, para não arriscar comprometer meus resultados, subi apenas a correção para arquivos estáticos no servidor de Deploy.
 
 ## Autenticação
 
