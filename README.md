@@ -4,7 +4,7 @@ Oi, tudo bem?
 Este é meu projeto para o desafio técnico da YouShop.
 Peço desculpas desde já por entregar sem estilização nos templates, não sou muito bom com frontend, então fiz apenas o básico, mas espero ter compensado implementando um sistema de API bem completo e com bem mais tarefas do que as pedidas. Fiz para mostrar o meu verdadeiro forte, que é Backend e APIRest.
 O projeto está em deploy e com banco de dados online, apenas acessar o caminho: 
-https://web-vurkazv8fljz.up-de-fra1-k8s-1.apps.run-on-seenode.com/
+<https://web-vurkazv8fljz.up-de-fra1-k8s-1.apps.run-on-seenode.com/>
 O serviço está funcionando corretamente online.
 Também é possível acessar as rotas da API normalmente com POSTMan/Insomnia, além da documentação online.
 
@@ -17,7 +17,7 @@ A API foi implementada com autenticação SimpleJWT, usando Django Rest Framewor
 Foram implementados filtros de pesquisa (query-params) em todas as rotas pertecentes a usuários do tipo Admin, para facilitar o manuseio do sistema.
 
 A documentação está na rota `/api/schema/swagger/`
-Por consequência, documentação online pode ser acessada em `https://web-vurkazv8fljz.up-de-fra1-k8s-1.apps.run-on-seenode.com/api/schema/swagger/`
+Por consequência, documentação online pode ser acessada em <https://web-vurkazv8fljz.up-de-fra1-k8s-1.apps.run-on-seenode.com/api/schema/swagger/>
 
 ## Frontend
 
