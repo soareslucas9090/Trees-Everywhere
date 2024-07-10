@@ -32,4 +32,4 @@ urlpatterns = [
     ),
     path("everywhere/", include("everywhere.urls")),
     path("", RedirectView.as_view(url="/everywhere/", permanent=True)),
-] + static(settings.STATIC_URL, document_root=settings.STATICFILES_DIRS[0])
+]
