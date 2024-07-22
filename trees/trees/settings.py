@@ -3,6 +3,8 @@ import sys
 from datetime import timedelta
 from pathlib import Path
 
+from dotenv import load_dotenv
+
 # Build paths inside the project like this: BASE_DIR / 'subdir'.
 BASE_DIR = Path(__file__).resolve().parent.parent
 
@@ -23,50 +25,28 @@ SPECTACULAR_SETTINGS = {
     "REDOC_DIST": "SIDECAR",
 }
 
+
 SECRET_KEY = os.environ.get("secretKeyDjango")
 
-if SECRET_KEY:
-    DEBUG = os.environ.get("debugMode")
-    ALLOWED_HOSTS = [os.environ.get("allowedHosts")]
-    DATABASES = {
-        "default": {
-            "ENGINE": os.environ.get("bdEngine"),
-            "NAME": os.environ.get("bdName"),
-            "USER": os.environ.get("bdUser"),
-            "PASSWORD": os.environ.get("bdPass"),
-            "HOST": os.environ.get("bdHost"),
-            "PORT": os.environ.get("bdPort"),
-        }
-    }
-    signing_key = os.environ.get("secretKeyJWT")
-else:
-    from .env import (
-        allowedHosts,
-        bdEngine,
-        bdHost,
-        bdName,
-        bdPass,
-        bdPort,
-        bdUser,
-        debug,
-        secretKeyDjango,
-        secretKeyJWT,
-    )
+# Testa se já há variáveis de ambiente configuradas, se não há, carrega do arquivo local .env
+if not SECRET_KEY:
+    load_dotenv()
+    SECRET_KEY = os.environ.get("secretKeyDjango")
 
-    SECRET_KEY = secretKeyDjango
-    DEBUG = debug
-    ALLOWED_HOSTS = allowedHosts
-    DATABASES = {
-        "default": {
-            "ENGINE": bdEngine,
-            "NAME": bdName,
-            "USER": bdUser,
-            "PASSWORD": bdPass,
-            "HOST": bdHost,
-            "PORT": bdPort,
-        }
+DEBUG = os.environ.get("debugMode")
+ALLOWED_HOSTS = [os.environ.get("allowedHosts")]
+DATABASES = {
+    "default": {
+        "ENGINE": os.environ.get("bdEngine"),
+        "NAME": os.environ.get("bdName"),
+        "USER": os.environ.get("bdUser"),
+        "PASSWORD": os.environ.get("bdPass"),
+        "HOST": os.environ.get("bdHost"),
+        "PORT": os.environ.get("bdPort"),
     }
-    signing_key = secretKeyJWT
+}
+signing_key = os.environ.get("secretKeyJWT")
+
 
 if "test" in sys.argv or "test_coverage" in sys.argv:
     DATABASES["default"] = {
