@@ -1,9 +1,3 @@
-from django.contrib.auth.hashers import (
-    check_password,
-    identify_hasher,
-    is_password_usable,
-    make_password,
-)
 from django.contrib.auth.models import (
     AbstractBaseUser,
     BaseUserManager,
@@ -40,7 +34,6 @@ class UserManager(BaseUserManager):
             name=name,
             **extra_fields,
         )
-        print("Aqui ====== 1")
         user.set_password(password)
         user.save(using=self._db)
         return user
@@ -174,13 +167,22 @@ class Account_User(models.Model):
 
 class Profile(models.Model):
     about = models.TextField(blank=False, null=False)
-    joined = models.DateTimeField(null=True)
     user = models.OneToOneField(
         User, related_name="profile_user", on_delete=models.CASCADE, null=False
     )
+    joined = models.DateTimeField(null=True)
+
+    def save(self, *args, **kwargs):
+
+        # Update the 'joined' field with the user's 'date_joined'
+        if self.joined == None:
+            if self.user:
+                self.joined = self.user.date_joined
+
+        super().save(*args, **kwargs)
 
     def __str__(self):
-        return self.user
+        return self.user.name
 
 
 class Tree(models.Model):

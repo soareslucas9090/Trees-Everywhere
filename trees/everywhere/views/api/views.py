@@ -159,30 +159,6 @@ class ProfileViewSet(ModelViewSet):
     # Access only if user.is_admin = True
     http_method_names = ["get", "head", "patch", "delete", "post"]
 
-    # The create method is overridden to make joined receive the same as user.date_joined
-
-    def create(self, request, *args, **kwargs):
-        serializer = self.get_serializer(data=request.data)
-        serializer.is_valid(raise_exception=True)
-
-        try:
-            user = User.objects.get(id=serializer.data["user"])
-        except:
-            return Response(
-                {"Error": "The User must be valid!"}, status=status.HTTP_404_NOT_FOUND
-            )
-
-        Profile.objects.create(
-            about=serializer.data["about"],
-            user=user,
-            joined=user.date_joined,
-        )
-        headers = self.get_success_headers(serializer.data)
-
-        return Response(
-            serializer.data, status=status.HTTP_201_CREATED, headers=headers
-        )
-
 
 @extend_schema_view(
     list=extend_schema(tags=["Trees"]),
