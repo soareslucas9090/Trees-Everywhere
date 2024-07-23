@@ -1,4 +1,5 @@
 from django import forms
+from django.contrib.auth.hashers import make_password
 
 from .models import Account, PlantedTree, Tree, User
 
@@ -20,6 +21,7 @@ class UserCreationForm(forms.ModelForm):
     def save(self, commit=True):
         user = super().save(commit=False)
         if commit:
+            user.password = make_password(password=user.password)
             user.save()
             self.save_m2m()
             user.accounts.set(self.cleaned_data["accounts"])

@@ -145,7 +145,7 @@ WSGI_APPLICATION = "trees.wsgi.application"
 # redirecionamento padrão depois de fazer o login
 LOGIN_REDIRECT_URL = "/"
 
-SESSION_COOKIE_AGE = 300
+SESSION_COOKIE_AGE = 3000
 
 SESSION_EXPIRE_AT_BROWSER_CLOSE = False
 

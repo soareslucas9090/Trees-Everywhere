@@ -1,3 +1,4 @@
+from django.contrib.auth.hashers import make_password
 from rest_framework import serializers
 
 from .models import Account, Account_User, PlantedTree, Profile, Tree, User
@@ -50,6 +51,8 @@ class UserSerializer(serializers.ModelSerializer):
 
         if len(password) < 6:
             raise serializers.ValidationError("Must have at least 6 chars.")
+
+        password = make_password(password=password)
 
         return password
 

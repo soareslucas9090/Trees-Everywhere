@@ -40,7 +40,7 @@ class UserManager(BaseUserManager):
             name=name,
             **extra_fields,
         )
-
+        print("Aqui ====== 1")
         user.set_password(password)
         user.save(using=self._db)
         return user
@@ -98,22 +98,9 @@ class User(AbstractBaseUser, PermissionsMixin):
     def __str__(self):
         return self.name
 
-    # Este método save salva o nome do usuário com tudo minusculo, e faz o hash da senha
+    # Este método save salva o nome do usuário com tudo em minusculo
     def save(self, *args, **kwargs):
         self.name = self.name.lower()
-        # Este if serve para salvar a senha corretamente
-        # A senha só é criptografada se o usuário estiver sendo criado, ou caso a senha
-        # salva não corresponda a que está sendo passada (no caso de um update)
-        # E além disso, a senha anterior não deve estar em formato criptografado
-        # Esta última verificação foi adicionada por causa dos testes
-        if not self.pk or not check_password(
-            self.password, self.__class__.objects.get(pk=self.pk).password
-        ):
-            try:
-                identify_hasher(self.password)
-            except:
-                self.password = make_password(password=self.password)
-
         super().save(*args, **kwargs)
 
     class Meta:
